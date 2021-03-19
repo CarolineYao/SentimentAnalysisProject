@@ -1,4 +1,10 @@
 from model_utils import create_model
+import nlp
+
+# Load trainning dataset
+dataset = nlp.load_dataset('emotion')
+# Preping datasets
+test_data = dataset['test']
 
 model = create_model()
 loss, acc = model.evaluate(test_seq, test_labels_id)
