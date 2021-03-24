@@ -14,20 +14,26 @@ class Data:
     __picture_list = []
     
     def __init__(self, text = "", time = datetime.datetime.now()):
-        __text = text
-        __time = time
+        self.__text = text
+        self.__time = time
         
     def add_pic():
         pass
+    
+    def get_text(self):
+        return self.__text
+    
+    def get_time(self):
+        return self.__time
 
 class external_API_login:
     __user_info = None
     
     def __init__(self, user_info):
-        __user_info = user_info
+        self.__user_info = user_info
 
-    def get_user_info():
-        return __user_info
+    def get_user_info(self):
+        return self.__user_info
 
 
 class Model:         
@@ -45,5 +51,5 @@ class Model:
     def login():
         pass
     
-    def add_external_login_info(user_info):
-        __external_API_login = user_info
+    def add_external_login_info(self, ser_info):
+        self.__external_API_login = user_info
