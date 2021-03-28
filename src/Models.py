@@ -17,6 +17,12 @@ class Data:
         self.__text = text
         self.__time = time
         
+    def __str__(self):
+     return str(self.__time) + " : " + self.__text
+ 
+    def __repr__(self):
+     return str(self.__time) + " : " + self.__text
+        
     def add_pic():
         pass
     
