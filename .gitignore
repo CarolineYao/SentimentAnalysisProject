@@ -1,7 +1,6 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-src/Services/__pycache__/
-*/__pycache__/
+**/__pycache__/
 src/Services/venv/
 
 # dependencies
