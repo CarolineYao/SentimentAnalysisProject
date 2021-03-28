@@ -4,11 +4,17 @@ from Models import Data
 from abc import ABC, abstractmethod
 import datetime
 
-class SocialMediaDataFetchInterface(ABC):
+class SocialMediaDataFetch(ABC):
     
     _start_date = datetime.datetime.now() - datetime.timedelta(days=7)
     _end_date = datetime.datetime.now()
     _data_lst = []
+
+    def __init__(self, start_date, end_date):
+        assert(start_date < end_date)
+        self._start_date = start_date
+        self._end_date = end_date
+        self._data_lst = []
     
     @abstractmethod
     def __get_api_access__(self):
@@ -31,21 +37,20 @@ class SocialMediaDataFetchInterface(ABC):
     
     
 
-class TwitterDataFetch(SocialMediaDataFetchInterface):
-    __api = None
+class TwitterDataFetch(SocialMediaDataFetch):
+    _api = None
     
     def __init__(self, start_date = datetime.datetime.now() - datetime.timedelta(days=7), end_date = datetime.datetime.now()):
         assert(start_date < end_date)
-        self._start_date = start_date
-        self._end_date = end_date
+        super().__init__(start_date, end_date)
         print(id(self._data_lst))
     
     
     def __get_user_timeline__(self, user_id, last_id = -1):
         if last_id == -1:
-            new_tweets = self.__api.user_timeline(screen_name=user_id, count=200, include_rts = False, tweet_mode = 'extended')
+            new_tweets = self._api.user_timeline(screen_name=user_id, count=200, include_rts = False, tweet_mode = 'extended')
         else: 
-            new_tweets = self.__api.user_timeline(screen_name=user_id, count=200, include_rts = False, max_id = str(last_id - 1), tweet_mode = 'extended')
+            new_tweets = self._api.user_timeline(screen_name=user_id, count=200, include_rts = False, max_id = str(last_id - 1), tweet_mode = 'extended')
         
         return new_tweets
 
@@ -59,7 +64,7 @@ class TwitterDataFetch(SocialMediaDataFetchInterface):
 
         auth = OAuthHandler(consumer_key, consumer_secret)
         auth.set_access_token(access_token, access_token_secret)
-        self.__api = API(auth)
+        self._api = API(auth)
 
     def __format_data__(self, searched_tweets):
         for tweet in searched_tweets:
@@ -106,6 +111,7 @@ class TwitterDataFetch(SocialMediaDataFetchInterface):
     
 
     def fetch_user_posts(self, user_id):
+        self._data_lst = []
         self.__get_api_access__()
         last_id = -1
         keep_requesting = True
@@ -122,7 +128,6 @@ class TwitterDataFetch(SocialMediaDataFetchInterface):
             except TweepError as e:
                 print(e)
                 break
-  
 
 
 dataFetch7 = TwitterDataFetch(start_date = datetime.datetime.now() - datetime.timedelta(days=1))
@@ -135,6 +140,10 @@ dataFetch8 = TwitterDataFetch(start_date = datetime.datetime.now() - datetime.ti
 dataFetch8.fetch_user_posts("brecrossings")
 lst_8 = dataFetch8.get_data_lst()
 
+print(len(lst_8))
 
 
+dataFetch7.fetch_user_posts("brecrossings")
+lst_7 = dataFetch7.get_data_lst()
 
+print(len(lst_7))
