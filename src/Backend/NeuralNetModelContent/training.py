@@ -1,14 +1,14 @@
 
 import tensorflow as tf
 import numpy as np
-import matplotlib.pyplot as plt
 import nlp
 import random
 import os
 from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
+import pickle
 
-from model_utils import create_model
+from model_utils import create_model, index_to_class
 
 maxlen = 50
 
@@ -42,10 +42,12 @@ train_texts, train_labels = get_text_and_label(train_data)
 
 tokenizer = Tokenizer(num_words=10000, oov_token='<UNNK>')
 tokenizer.fit_on_texts(train_texts)
+with open('./weights/tokenizer.pickle', 'wb') as handle:
+    pickle.dump(tokenizer, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
-classes = set(train_labels)
-class_to_index = dict((c, i) for i, c in enumerate(classes))
-index_to_class = dict((k, v) for v, k in class_to_index.items())
+class_to_index = dict((c, i) for i, c in index_to_class.items())
+print(index_to_class)
+print(class_to_index)
 
 train_seq, train_labels_id = get_x_y_data(train_data, class_to_index)
 validation_seq, validation_labels_id = get_x_y_data(validation_data, class_to_index)
@@ -55,7 +57,7 @@ test_seq, test_labels_id = get_x_y_data(test_data, class_to_index)
 model = create_model()
 
 # Create checkpoints to store the weights
-checkpoint_path = "./training_weights/cp.ckpt"
+checkpoint_path = "./weights/cp.ckpt"
 checkpoint_dir = os.path.dirname(checkpoint_path)
 
 cp_callback = tf.keras.callbacks.ModelCheckpoint(filepath=checkpoint_path,
@@ -68,7 +70,7 @@ model.fit(
     validation_data=(validation_seq, validation_labels_id),
     epochs = 20,
     callbacks=[
-               tf.keras.callbacks.EarlyStopping(monitor='val_accuracy', patience=2),
+               tf.keras.callbacks.EarlyStopping(monitor='val_acc', patience=2),
                cp_callback
     ]
 )

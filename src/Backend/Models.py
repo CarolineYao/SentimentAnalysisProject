@@ -51,7 +51,7 @@ class Model:
         pass
     
     ## static method for choosing the model
-    def get_model(model_Name):
+    def get_model(self, model_Name):
         pass
     
     def login():
