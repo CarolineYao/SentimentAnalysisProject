@@ -31,8 +31,7 @@ def create_model():
     return model
 
 def get_sequences(texts, maxlen=50):
-    
-# loading
+    # loading
     with open('./NeuralNetModelContent/weights/tokenizer.pickle', 'rb') as handle:
         tokenizer = pickle.load(handle)
     sequences = tokenizer.texts_to_sequences(texts)

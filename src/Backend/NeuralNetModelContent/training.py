@@ -31,48 +31,50 @@ def get_x_y_data(data, label_to_id):
 
     return seq, labels_id
 
-# Load trainning dataset
-dataset = nlp.load_dataset('emotion')
-# Preping datasets
-train_data = dataset['train']
-validation_data = dataset['validation']
-test_data = dataset['test']
 
-train_texts, train_labels = get_text_and_label(train_data)
+if __name__ == '__main__':
+    # Load trainning dataset
+    dataset = nlp.load_dataset('emotion')
+    # Preping datasets
+    train_data = dataset['train']
+    validation_data = dataset['validation']
+    test_data = dataset['test']
 
-tokenizer = Tokenizer(num_words=10000, oov_token='<UNNK>')
-tokenizer.fit_on_texts(train_texts)
-with open('./weights/tokenizer.pickle', 'wb') as handle:
-    pickle.dump(tokenizer, handle, protocol=pickle.HIGHEST_PROTOCOL)
+    train_texts, train_labels = get_text_and_label(train_data)
 
-class_to_index = dict((c, i) for i, c in index_to_class.items())
-print(index_to_class)
-print(class_to_index)
+    tokenizer = Tokenizer(num_words=10000, oov_token='<UNNK>')
+    tokenizer.fit_on_texts(train_texts)
+    with open('./weights/tokenizer.pickle', 'wb') as handle:
+        pickle.dump(tokenizer, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
-train_seq, train_labels_id = get_x_y_data(train_data, class_to_index)
-validation_seq, validation_labels_id = get_x_y_data(validation_data, class_to_index)
-test_seq, test_labels_id = get_x_y_data(test_data, class_to_index)
+    class_to_index = dict((c, i) for i, c in index_to_class.items())
+    print(index_to_class)
+    print(class_to_index)
 
-# Create model
-model = create_model()
+    train_seq, train_labels_id = get_x_y_data(train_data, class_to_index)
+    validation_seq, validation_labels_id = get_x_y_data(validation_data, class_to_index)
+    test_seq, test_labels_id = get_x_y_data(test_data, class_to_index)
 
-# Create checkpoints to store the weights
-checkpoint_path = "./weights/cp.ckpt"
-checkpoint_dir = os.path.dirname(checkpoint_path)
+    # Create model
+    model = create_model()
 
-cp_callback = tf.keras.callbacks.ModelCheckpoint(filepath=checkpoint_path,
-                                                 save_weights_only=True,
-                                                 verbose=1)
+    # Create checkpoints to store the weights
+    checkpoint_path = "./weights/cp.ckpt"
+    checkpoint_dir = os.path.dirname(checkpoint_path)
 
-model.fit(
-    train_seq,
-    train_labels_id,
-    validation_data=(validation_seq, validation_labels_id),
-    epochs = 20,
-    callbacks=[
-               tf.keras.callbacks.EarlyStopping(monitor='val_acc', patience=2),
-               cp_callback
-    ]
-)
+    cp_callback = tf.keras.callbacks.ModelCheckpoint(filepath=checkpoint_path,
+                                                    save_weights_only=True,
+                                                    verbose=1)
 
-model.evaluate(test_seq, test_labels_id)
+    model.fit(
+        train_seq,
+        train_labels_id,
+        validation_data=(validation_seq, validation_labels_id),
+        epochs = 20,
+        callbacks=[
+                tf.keras.callbacks.EarlyStopping(monitor='val_acc', patience=2),
+                cp_callback
+        ]
+    )
+
+    model.evaluate(test_seq, test_labels_id)

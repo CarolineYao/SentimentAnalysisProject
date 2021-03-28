@@ -130,20 +130,21 @@ class TwitterDataFetch(SocialMediaDataFetch):
                 break
 
 
-dataFetch7 = TwitterDataFetch(start_date = datetime.datetime.now() - datetime.timedelta(days=1))
-dataFetch7.fetch_user_posts("brecrossings")
-lst_7 = dataFetch7.get_data_lst()
+if __name__ == '__main__':
+    dataFetch7 = TwitterDataFetch(start_date = datetime.datetime.now() - datetime.timedelta(days=1))
+    dataFetch7.fetch_user_posts("brecrossings")
+    lst_7 = dataFetch7.get_data_lst()
 
-print(len(lst_7))
+    print(len(lst_7))
 
-dataFetch8 = TwitterDataFetch(start_date = datetime.datetime.now() - datetime.timedelta(days=2))
-dataFetch8.fetch_user_posts("brecrossings")
-lst_8 = dataFetch8.get_data_lst()
+    dataFetch8 = TwitterDataFetch(start_date = datetime.datetime.now() - datetime.timedelta(days=2))
+    dataFetch8.fetch_user_posts("brecrossings")
+    lst_8 = dataFetch8.get_data_lst()
 
-print(len(lst_8))
+    print(len(lst_8))
 
 
-dataFetch7.fetch_user_posts("brecrossings")
-lst_7 = dataFetch7.get_data_lst()
+    dataFetch7.fetch_user_posts("brecrossings")
+    lst_7 = dataFetch7.get_data_lst()
 
-print(len(lst_7))
+    print(len(lst_7))
