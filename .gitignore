@@ -1,15 +1,19 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+src/Services/__pycache__/
+*/__pycache__/
+src/Services/venv/
+
 # dependencies
-/node_modules
+reactjs/node_modules
 /.pnp
 .pnp.js
 
 # testing
-/coverage
+reactjs/coverage
 
 # production
-/build
+reactjs/build
 
 # misc
 .DS_Store
