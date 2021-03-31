@@ -13,9 +13,9 @@ This step might take a while, so, time to grab a cup of coffee :coffee:
 ## Start app
 You can either run 
 
-* `start-app` -- This will start the React frontend as well as the Flask api.
+* `npm run start-app` -- This will start the React frontend as well as the Flask api.
 
 Or you can have two tabs open and run the two following commands in these seperate tabs,
 * `npm start` -- This will start the React frontend
-* `npm start-api` -- This will start the Flask api
+* `npm run start-api` -- This will start the Flask api
 
