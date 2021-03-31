@@ -17,5 +17,5 @@ You can either run
 
 Or you can have two tabs open and run the two following commands in these seperate tabs,
 * `npm start` -- This will start the React frontend
-* `npm start-app` -- This will start the Flask api
+* `npm start-api` -- This will start the Flask api
 
