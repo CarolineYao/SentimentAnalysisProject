@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
+import '../styles/socialMediaAnalysis.scss';
 
 class SocialMediaAnalysis extends Component {
   constructor(){
@@ -8,7 +9,7 @@ class SocialMediaAnalysis extends Component {
 
   render() {
     return (
-        <h1>Social Media Analysis</h1>
+        <h1 className='section-title'>This is Social Media Analysis page</h1>
     );
   }
 

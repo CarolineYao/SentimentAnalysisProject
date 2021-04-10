@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
+import '../styles/home.scss';
 
 class Home extends Component {
   constructor(){
@@ -8,7 +9,7 @@ class Home extends Component {
 
   render() {
     return (
-        <h1>Home</h1>
+        <h1 className='section-title'>This is Home page</h1>
     );
   }
 

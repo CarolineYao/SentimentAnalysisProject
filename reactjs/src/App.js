@@ -1,5 +1,4 @@
-import './App.scss';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 import Home from './views/home';
 import About from './views/about';
 import SocialMediaAnalysis from './views/socialMediaAnalysis';
@@ -11,13 +10,18 @@ function App() {
     <Router>
       <Header />
 
-      <div>
-        <Switch>
+      <Switch>
+        <Route
+          exact
+          path="/"
+          render={() => {
+              return (<Redirect to="/home" />);
+          }}
+        />
           <Route path='/home' component={Home} />
           <Route path='/socialmediaanalysis' component={SocialMediaAnalysis} />
           <Route path='/about' component={About} />
         </Switch>
-      </div>
   </Router>
   );
 }
