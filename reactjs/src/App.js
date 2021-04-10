@@ -1,25 +1,23 @@
-import './App.css';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import './App.scss';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Home from './views/home';
 import About from './views/about';
 import SocialMediaAnalysis from './views/socialMediaAnalysis';
+import Header from './components/header';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   return (
     <Router>
-      <main>
-        <nav>
-          <ul>
-            <li><a href='/'>Home</a></li>
-            <li><a href='/socialmediaanalysis'>Social Media Analysis</a></li>
-            <li><a href='/about'>About</a></li>
-          </ul>
-        </nav>
-      </main>
+      <Header />
 
-      <Route path='/' exact component={Home} />
-      <Route path='/about' component={About} />
-      <Route path='/socialmediaanalysis' component={SocialMediaAnalysis} />
+      <div>
+        <Switch>
+          <Route path='/home' component={Home} />
+          <Route path='/socialmediaanalysis' component={SocialMediaAnalysis} />
+          <Route path='/about' component={About} />
+        </Switch>
+      </div>
   </Router>
   );
 }
