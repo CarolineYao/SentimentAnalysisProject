@@ -9,14 +9,18 @@ const SocialMediaAnalysis = (props, context) => {
     const [searchFilter, setSearchFilter] = useState({
         socialMediaSource: 'twitter',
         username: '',
-        dateRange: {},
+        dateRange: {
+            startDate: new Date(),
+            endDate: new Date(),
+            key: 'selection',
+        },
     });
 
     const renderEachRow = () => {
         const dummpLoop = Array.from(Array(10).keys());
         return dummpLoop.map((index) => {
             return (
-                <div className='per-tweet'>
+                <div className='per-tweet' key={index}>
                     This is tweet-{index} along with sentiment analysis result
                 </div>
             );

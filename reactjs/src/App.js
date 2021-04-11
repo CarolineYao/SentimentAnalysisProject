@@ -8,7 +8,6 @@ import Home from './views/home';
 import About from './views/about';
 import SocialMediaAnalysis from './views/socialMediaAnalysis';
 import Header from './components/header';
-import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
     return (

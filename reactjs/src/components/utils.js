@@ -1,3 +1,5 @@
+import { format, isValid } from 'date-fns';
+
 export const socialMediaSourceList = [
     {
         value: 'twitter',
@@ -8,3 +10,10 @@ export const socialMediaSourceList = [
         label: 'A fake option',
     },
 ];
+
+export function formatDate(value, dateFormat) {
+    if (value && isValid(value)) {
+        return format(value, dateFormat);
+    }
+    return '';
+}

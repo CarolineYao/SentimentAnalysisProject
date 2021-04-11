@@ -1,5 +1,7 @@
+@import './vars.scss';
+
 .header {
-    background-color: #e5e4e3;
+    background-color: $background-theme-color;
 
     .brand {
         color: #585e5b !important;

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { Dropdown, DropdownButton } from 'react-bootstrap';
+import DateRangePicker from './dateRangePicker';
 import '../styles/searchFilter.scss';
 
 class SearchFilter extends Component {
@@ -22,6 +23,15 @@ class SearchFilter extends Component {
             const newSearchFilter = {
                 ...searchFilter,
                 username: value,
+            };
+
+            this.props.onChange(newSearchFilter);
+        };
+
+        const handleDateRangeSelect = (range) => {
+            const newSearchFilter = {
+                ...searchFilter,
+                dateRange: range,
             };
 
             this.props.onChange(newSearchFilter);
@@ -54,7 +64,7 @@ class SearchFilter extends Component {
 
         return (
             <div className='search-filters'>
-                <div className='social-media-source search-filter'>
+                <div className='social-media-source search-filter row'>
                     <div className='label'>Select social media: </div>
                     <DropdownButton
                         id='dropdown-basic-button'
@@ -66,7 +76,7 @@ class SearchFilter extends Component {
                     </DropdownButton>
                 </div>
 
-                <div className='username-input search-filter'>
+                <div className='username-input search-filter row'>
                     <div className='label'>Enter Username: </div>
                     <input
                         type='text'
@@ -77,11 +87,12 @@ class SearchFilter extends Component {
                 </div>
 
                 {/* TODO: finish date picker */}
-                <div className='date-selector search-filter'>
-                    <div className='label from-date'>From date: </div>
-                    <input type='date' className='selector from-date' />
-                    <div className='label to-date'>To date: </div>
-                    <input type='date' className='selector to-date' />
+                <div className='date-selector search-filter row'>
+                    <div className='label'>Select Date Range: </div>
+                    <DateRangePicker
+                        dateRange={searchFilter.dateRange}
+                        onChange={handleDateRangeSelect}
+                    />
                 </div>
             </div>
         );
