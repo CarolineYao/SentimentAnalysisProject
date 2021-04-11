@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 import SearchFilter from '../components/searchFilter';
-import {socialMediaSourceList} from '../components/utils';
+import { socialMediaSourceList } from '../components/utils';
 import '../styles/socialMediaAnalysis.scss';
 
 const SocialMediaAnalysis = (props, context) => {
@@ -10,30 +10,32 @@ const SocialMediaAnalysis = (props, context) => {
         socialMediaSource: 'twitter',
         username: '',
         dateRange: {},
-    }); 
+    });
 
     const renderEachRow = () => {
-        const dummpLoop = Array.from(Array(10).keys())
-        return dummpLoop.map(index => {
+        const dummpLoop = Array.from(Array(10).keys());
+        return dummpLoop.map((index) => {
             return (
                 <div className='per-tweet'>
                     This is tweet-{index} along with sentiment analysis result
                 </div>
-            )
-        })
-    }
+            );
+        });
+    };
 
     return (
         <div className='social-media-analysis page'>
-            <h1 className='section-title'>This is Social Media Analysis page</h1>
+            <h1 className='section-title'>
+                This is Social Media Analysis page
+            </h1>
 
-            <SearchFilter 
+            <SearchFilter
                 searchFilter={searchFilter}
                 dropdownOptions={socialMediaSourceList}
                 onChange={setSearchFilter}
             />
 
-            <Button variant="primary" className="submit">
+            <Button variant='primary' className='submit'>
                 Submit
             </Button>
 
@@ -47,7 +49,6 @@ const SocialMediaAnalysis = (props, context) => {
             </div>
         </div>
     );
-
-}
+};
 
 export default withRouter(SocialMediaAnalysis);

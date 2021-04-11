@@ -3,16 +3,13 @@ import { withRouter } from 'react-router-dom';
 import '../styles/home.scss';
 
 class Home extends Component {
-  constructor(){
-    super();
-  }
+    constructor() {
+        super();
+    }
 
-  render() {
-    return (
-        <h1 className='section-title'>This is Home page</h1>
-    );
-  }
-
+    render() {
+        return <h1 className='section-title'>This is Home page</h1>;
+    }
 }
 
 export default withRouter(Home);

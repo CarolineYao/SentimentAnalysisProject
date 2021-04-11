@@ -6,5 +6,5 @@ export const socialMediaSourceList = [
     {
         value: 'fake',
         label: 'A fake option',
-    }
+    },
 ];
