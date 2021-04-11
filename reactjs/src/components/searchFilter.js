@@ -1,79 +1,55 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import { Dropdown, DropdownButton } from 'react-bootstrap';
+import SelectDropdown from './selectDropdown';
 import DateRangePicker from './dateRangePicker';
+import { getTimezoneLst, socialMediaSourceList, filterLsts } from './utils';
 import '../styles/searchFilter.scss';
 
 class SearchFilter extends Component {
     render() {
-        const { searchFilter, dropdownOptions } = this.props;
+        const { searchFilter } = this.props;
+        const timezoneOptions = getTimezoneLst();
 
-        const handleDropdownSelect = (selectedValue) => {
-            const newSearchFilter = {
+        const handleSearchFilterChange = (newValue, filterName) => {
+            let newFiter = {
                 ...searchFilter,
-                socialMediaSource: selectedValue,
             };
 
-            this.props.onChange(newSearchFilter);
-        };
-
-        const handleUsernameInput = (event) => {
-            const value = event.target.value;
-            const newSearchFilter = {
-                ...searchFilter,
-                username: value,
-            };
-
-            this.props.onChange(newSearchFilter);
-        };
-
-        const handleDateRangeSelect = (range) => {
-            const newSearchFilter = {
-                ...searchFilter,
-                dateRange: range,
-            };
-
-            this.props.onChange(newSearchFilter);
-        };
-
-        const renderDropdownOptions = () => {
-            return dropdownOptions.map((option, index) => {
-                const isActive =
-                    searchFilter.socialMediaSource === option.value;
-
-                return (
-                    <Dropdown.Item
-                        eventKey={option.value}
-                        active={isActive}
-                        key={index}
-                    >
-                        {option.label}
-                    </Dropdown.Item>
-                );
-            });
-        };
-
-        const getDropdownButtonTitle = () => {
-            const selectedOption = dropdownOptions.find(
-                (option) => option.value === searchFilter.socialMediaSource
-            );
-
-            return selectedOption.label;
+            switch (filterName) {
+                case filterLsts.socialMedia:
+                    newFiter.socialMediaSource = newValue;
+                    break;
+                case filterLsts.username:
+                    const value = newValue.target.value;
+                    newFiter.username = value;
+                    break;
+                case filterLsts.timezone:
+                    newFiter.timezone = newValue;
+                    break;
+                case filterLsts.dateRange:
+                    newFiter.dateRange = newValue;
+                    break;
+                default:
+                    break;
+            }
+            this.props.onChange(newFiter);
         };
 
         return (
             <div className='search-filters'>
                 <div className='social-media-source search-filter row'>
                     <div className='label'>Select social media: </div>
-                    <DropdownButton
-                        id='dropdown-basic-button'
-                        title={getDropdownButtonTitle()}
-                        className='selector'
-                        onSelect={handleDropdownSelect}
-                    >
-                        {renderDropdownOptions()}
-                    </DropdownButton>
+                    <SelectDropdown
+                        value={searchFilter.socialMediaSource}
+                        options={socialMediaSourceList}
+                        onChange={(val) =>
+                            handleSearchFilterChange(
+                                val,
+                                filterLsts.socialMedia
+                            )
+                        }
+                    />
                 </div>
 
                 <div className='username-input search-filter row'>
@@ -82,16 +58,32 @@ class SearchFilter extends Component {
                         type='text'
                         className='selector'
                         value={searchFilter.username}
-                        onChange={handleUsernameInput}
+                        placeholder='e.g. johnDoe'
+                        onChange={(val) =>
+                            handleSearchFilterChange(val, filterLsts.username)
+                        }
                     />
                 </div>
 
-                {/* TODO: finish date picker */}
+                <div className='timezone-selector search-filter row'>
+                    <div className='label'>Select Timezone: </div>
+
+                    <SelectDropdown
+                        value={searchFilter.timezone}
+                        options={timezoneOptions}
+                        onChange={(val) =>
+                            handleSearchFilterChange(val, filterLsts.timezone)
+                        }
+                    />
+                </div>
+
                 <div className='date-selector search-filter row'>
                     <div className='label'>Select Date Range: </div>
                     <DateRangePicker
                         dateRange={searchFilter.dateRange}
-                        onChange={handleDateRangeSelect}
+                        onChange={(val) =>
+                            handleSearchFilterChange(val, filterLsts.dateRange)
+                        }
                     />
                 </div>
             </div>
@@ -101,7 +93,6 @@ class SearchFilter extends Component {
 
 SearchFilter.propTypes = {
     searchFilter: PropTypes.object.isRequired,
-    dropdownOptions: PropTypes.arrayOf(PropTypes.object).isRequired,
     onChange: PropTypes.func.isRequired,
 };
 

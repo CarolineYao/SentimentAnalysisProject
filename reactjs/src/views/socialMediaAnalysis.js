@@ -2,19 +2,11 @@ import React, { useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 import SearchFilter from '../components/searchFilter';
-import { socialMediaSourceList } from '../components/utils';
+import { defaultSearchFilter } from '../components/utils';
 import '../styles/socialMediaAnalysis.scss';
 
 const SocialMediaAnalysis = (props, context) => {
-    const [searchFilter, setSearchFilter] = useState({
-        socialMediaSource: 'twitter',
-        username: '',
-        dateRange: {
-            startDate: new Date(),
-            endDate: new Date(),
-            key: 'selection',
-        },
-    });
+    const [searchFilter, setSearchFilter] = useState(defaultSearchFilter);
 
     const renderEachRow = () => {
         const dummpLoop = Array.from(Array(10).keys());
@@ -35,7 +27,6 @@ const SocialMediaAnalysis = (props, context) => {
 
             <SearchFilter
                 searchFilter={searchFilter}
-                dropdownOptions={socialMediaSourceList}
                 onChange={setSearchFilter}
             />
 
