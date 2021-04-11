@@ -1,0 +1,28 @@
+.social-media-analysis {
+    .submit {
+        margin: 30px 10px;
+    }
+
+    .temp-placeholder {
+        border: 1px solid black;
+        text-align: center;
+        vertical-align: middle;
+        font-size: 26px;
+        margin: 50px 0;
+    }
+
+    .calendar {
+        height: 400px;
+        line-height: 400px;
+    }
+
+    .per-tweet-wrapper {
+        line-height: 100px;
+
+        .per-tweet {
+            border: 2px solid #59a2f3;
+            margin: 30px 80px;
+            font-size: 24px;
+        }
+    }
+}

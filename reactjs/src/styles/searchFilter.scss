@@ -1,0 +1,16 @@
+.search-filters {
+    .search-filter {
+        margin-top: 30px;
+
+        .label,
+        .selector {
+            display: inline;
+            margin-left: 10px;
+            vertical-align: middle;
+        }
+
+        .label {
+            font-size: 20px;
+        }
+    }
+}
