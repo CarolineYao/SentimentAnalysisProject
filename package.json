@@ -5,6 +5,8 @@
         "start-app": "npm start & npm run start-api",
         "build": "cd ./reactjs && npm build",
         "test": "cd ./reactjs && npm test",
-        "eject": "cd ./reactjs && npm eject"
-      }
+        "eject": "cd ./reactjs && npm eject",
+        "preinstall": "cd ./reactjs && npm install",
+        "postinstall": "cd .."
+    }
 }
