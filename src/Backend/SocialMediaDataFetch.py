@@ -94,26 +94,26 @@ class TwitterDataFetch(SocialMediaDataFetch):
             # means the earliest tweet is later than the end date, need to keep extracting
             return True
         
-        earliest = len(tweets)
+        earliest = (len(tweets) - 1)
         latest = 0
         
         if (self._start_date > tweets[-1].created_at):
             earliest = self.__binary_search_get_time_index(tweets, self._start_date)
         
         if (self._end_date < tweets[0].created_at):
-            latest = self.__binary_search_get_time_index(tweets[:earliest], self._end_date) - 1
+            latest = self.__binary_search_get_time_index(tweets[:earliest], self._end_date)
             assert(latest >= 0) #prevent bug
         self.__format_data__(tweets[latest: earliest])
                 
-        return earliest != len(tweets)
+        return earliest == (len(tweets) - 1)
 
 
     def __binary_search_get_time_index(self, tweets, time):
-        start_point = len(tweets)
+        start_point = (len(tweets) - 1)
         end_point = 0
         pivot = (start_point + end_point)//2
         while (start_point - end_point > 1):
-            if (time > tweets[pivot].created_at):
+            if (time >= tweets[pivot].created_at):
                 start_point = pivot
             else:
                 end_point = pivot
@@ -144,19 +144,19 @@ class TwitterDataFetch(SocialMediaDataFetch):
 
 if __name__ == '__main__':
     dataFetch7 = TwitterDataFetch(start_date = datetime.datetime.now() - datetime.timedelta(days=1))
-    dataFetch7.fetch_user_posts("brecrossings")
+    dataFetch7.fetch_user_posts("panettonepapi")
     lst_7 = dataFetch7.get_data_lst()
 
     print(len(lst_7))
 
     dataFetch8 = TwitterDataFetch(start_date = datetime.datetime.now() - datetime.timedelta(days=2))
-    dataFetch8.fetch_user_posts("brecrossings")
+    dataFetch8.fetch_user_posts("panettonepapi")
     lst_8 = dataFetch8.get_data_lst()
 
     print(len(lst_8))
 
 
-    dataFetch7.fetch_user_posts("brecrossings")
+    dataFetch7.fetch_user_posts("panettonepapi")
     lst_7 = dataFetch7.get_data_lst()
 
     print(len(lst_7))
