@@ -1,7 +1,7 @@
 {
     "scripts": {
         "start": "cd ./reactjs && npm start",
-        "start-api": "cd ./src/Services && flask run --no-debugger ",
+        "start-api": "cd ./src/Services && export FLASK_APP=endpoints.py && flask run --no-debugger ",
         "start-app": "npm start & npm run start-api",
         "build": "cd ./reactjs && npm build",
         "test": "cd ./reactjs && npm test",
