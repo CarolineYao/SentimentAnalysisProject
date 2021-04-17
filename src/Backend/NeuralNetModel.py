@@ -1,14 +1,18 @@
-from Models import Model, Data
-from NeuralNetModelContent.model_utils import create_model, index_to_class, get_sequences
+from . import Model, Data
+from . import create_model, index_to_class, get_sequences
 import nlp
 import datetime
 import numpy as np
+import os
 
 class NeuralNetModel(Model): 
     _model = None
+    _backend_folder_path = ""
 
-    def __init__(self):
+    def __init__(self, backend_folder_path="."):
         super().__init__()
+        
+        self._backend_folder_path = backend_folder_path
         self.get_model("NeuralNetModel")
         
 
@@ -19,7 +23,7 @@ class NeuralNetModel(Model):
     def analyze(self, data):
         assert(isinstance(data,(Data, str)))
         text = np.array([self.__pre_process_text(data.get_text())])
-        text = get_sequences(text)
+        text = get_sequences(text, backend_folder_path=self._backend_folder_path)
         prediction = self._model.predict(text)[0]
 
         return index_to_class.get(prediction.argmax())
@@ -27,8 +31,7 @@ class NeuralNetModel(Model):
     ## static method for choosing the model
     def get_model(self, model_Name):
         self._model = create_model()
-        checkpoint_path = "./NeuralNetModelContent/weights/cp.ckpt"
-        self._model.load_weights(checkpoint_path)
+        self._model.load_weights(self._backend_folder_path + '/NeuralNetModelContent/weights/cp.ckpt')
     
     def login():
         raise Error("Invalid function")

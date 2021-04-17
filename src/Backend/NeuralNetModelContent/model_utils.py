@@ -30,12 +30,12 @@ def create_model():
 
     return model
 
-def get_sequences(texts, maxlen=50):
+def get_sequences(texts, backend_folder_path='.'):
     # loading
-    with open('./NeuralNetModelContent/weights/tokenizer.pickle', 'rb') as handle:
+    with open(backend_folder_path + '/NeuralNetModelContent/weights/tokenizer.pickle', 'rb') as handle:
         tokenizer = pickle.load(handle)
     sequences = tokenizer.texts_to_sequences(texts)
-    padded = pad_sequences(sequences, truncating='post', padding='post', maxlen=maxlen)
+    padded = pad_sequences(sequences, truncating='post', padding='post')
 
     return np.array(padded)
  

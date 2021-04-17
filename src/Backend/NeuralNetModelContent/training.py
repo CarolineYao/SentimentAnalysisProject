@@ -1,4 +1,3 @@
-
 import tensorflow as tf
 import numpy as np
 import nlp
@@ -10,17 +9,15 @@ import pickle
 
 from model_utils import create_model, index_to_class
 
-maxlen = 50
-
 def get_text_and_label(data):
     texts = [x['text'] for x in data]
     labels = [x['label'] for x in data]
 
     return np.array(texts), np.array(labels)
 
-def get_sequences(tokenizer, texts, maxlen=maxlen):
+def get_sequences(tokenizer, texts):
     sequences = tokenizer.texts_to_sequences(texts)
-    padded = pad_sequences(sequences, truncating='post', padding='post', maxlen=maxlen)
+    padded = pad_sequences(sequences, truncating='post', padding='post')
 
     return np.array(padded)
 
@@ -70,9 +67,9 @@ if __name__ == '__main__':
         train_seq,
         train_labels_id,
         validation_data=(validation_seq, validation_labels_id),
-        epochs = 20,
+        epochs = 10,
         callbacks=[
-                tf.keras.callbacks.EarlyStopping(monitor='val_acc', patience=2),
+                tf.keras.callbacks.EarlyStopping(monitor='val_accuracy', patience=2),
                 cp_callback
         ]
     )

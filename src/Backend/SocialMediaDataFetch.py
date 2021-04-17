@@ -1,8 +1,12 @@
 import os
+import pytz
 from tweepy import OAuthHandler, API, TweepError
-from Models import Data
+from . import Data
 from abc import ABC, abstractmethod
 import datetime
+
+def check_if_datetime_offset_aware(date):
+    return date.tzinfo is not None and date.tzinfo.utcoffset(date) is not None
 
 class SocialMediaDataFetch(ABC):
     
@@ -12,8 +16,17 @@ class SocialMediaDataFetch(ABC):
 
     def __init__(self, start_date, end_date):
         assert(start_date < end_date)
+
         self._start_date = start_date
         self._end_date = end_date
+
+        if (check_if_datetime_offset_aware(start_date)):
+            self._start_date = start_date.astimezone(pytz.utc).replace(tzinfo=None)
+        
+
+        if (check_if_datetime_offset_aware(end_date)):
+            self._end_date = end_date.astimezone(pytz.utc).replace(tzinfo=None)
+        
         self._data_lst = []
     
     @abstractmethod
@@ -43,7 +56,6 @@ class TwitterDataFetch(SocialMediaDataFetch):
     def __init__(self, start_date = datetime.datetime.now() - datetime.timedelta(days=7), end_date = datetime.datetime.now()):
         assert(start_date < end_date)
         super().__init__(start_date, end_date)
-        print(id(self._data_lst))
     
     
     def __get_user_timeline__(self, user_id, last_id = -1):
