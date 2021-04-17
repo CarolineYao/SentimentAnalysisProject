@@ -66,6 +66,7 @@ def get():
                 date_analysis_data[data_emotion] = [result]
         else:
             analysis_by_date[data_date] = {}
+            analysis_by_date[data_date][data_emotion] = [result]
 
         
     # END OF FOR LOOP
