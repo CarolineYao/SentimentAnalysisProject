@@ -12,28 +12,28 @@ class SearchFilter extends Component {
         const timezoneOptions = getTimezoneLst();
 
         const handleSearchFilterChange = (newValue, filterName) => {
-            let newFiter = {
+            let newFilter = {
                 ...searchFilter,
             };
 
             switch (filterName) {
                 case filterLsts.socialMedia:
-                    newFiter.socialMediaSource = newValue;
+                    newFilter.socialMediaSourceOption = newValue;
                     break;
                 case filterLsts.username:
                     const value = newValue.target.value;
-                    newFiter.username = value;
+                    newFilter.username = value;
                     break;
                 case filterLsts.timezone:
-                    newFiter.timezone = newValue;
+                    newFilter.timezoneOption = newValue;
                     break;
                 case filterLsts.dateRange:
-                    newFiter.dateRange = newValue;
+                    newFilter.dateRange = newValue;
                     break;
                 default:
                     break;
             }
-            this.props.onChange(newFiter);
+            this.props.onChange(newFilter);
         };
 
         return (
@@ -41,7 +41,7 @@ class SearchFilter extends Component {
                 <div className='social-media-source search-filter row'>
                     <div className='label'>Select social media: </div>
                     <SelectDropdown
-                        value={searchFilter.socialMediaSource}
+                        value={searchFilter.socialMediaSourceOption}
                         options={socialMediaSourceList}
                         onChange={(val) =>
                             handleSearchFilterChange(
@@ -69,7 +69,7 @@ class SearchFilter extends Component {
                     <div className='label'>Select Timezone: </div>
 
                     <SelectDropdown
-                        value={searchFilter.timezone}
+                        value={searchFilter.timezoneOption}
                         options={timezoneOptions}
                         onChange={(val) =>
                             handleSearchFilterChange(val, filterLsts.timezone)

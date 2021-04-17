@@ -1,5 +1,7 @@
 import { format, isValid } from 'date-fns';
 
+export const API_URL = 'http://localhost:5000';
+
 export const socialMediaSourceList = [
     {
         value: 'twitter',
@@ -19,9 +21,9 @@ export const filterLsts = {
 };
 
 export const defaultSearchFilter = {
-    socialMediaSource: socialMediaSourceList[0],
+    socialMediaSourceOption: socialMediaSourceList[0],
     username: '',
-    timezone: getTimezoneLabelObj(guessUserTimezone()),
+    timezoneOption: getTimezoneLabelObj(guessUserTimezone()),
     dateRange: {
         startDate: new Date(),
         endDate: new Date(),
