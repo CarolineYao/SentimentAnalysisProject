@@ -8,7 +8,7 @@ from json import JSONEncoder
 def json_response(payload, status=200):
     return (json.dumps(payload), status, {"content-type": "application/json"})
 
-def required_header_check(statement, message):
+def required_param_check(statement, message):
     if statement == True:
         raise werkzeug.exceptions.BadRequest(description=message)
     else:

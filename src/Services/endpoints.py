@@ -1,33 +1,41 @@
 from flask import Flask, json, g, request, jsonify, make_response
+from flask_cors import CORS, cross_origin
 from .utils import *
 from .errorHandlers import *
 from Backend import TwitterDataFetch
 from Backend import NeuralNetModel
+from Backend import index_to_class
 import pytz
 from datetime import datetime, timedelta
 import werkzeug
 
 app = Flask(__name__)
 app.register_error_handler(400, handle_bad_request)
+app.config['SECRET_KEY'] = 'the quick brown fox jumps over the lazy   dog'
+app.config['CORS_HEADERS'] = 'Content-Type'
+
+cors = CORS(app, resources={r"/foo": {"origins": "http://localhost:port"}})
 
 
 @app.route("/getuserpostsemotions", methods=["GET"])
+@cross_origin(origin='localhost',headers=['Content- Type','Authorization'])
+
 def get():
-    headers = request.headers
+    args = request.args
 
-    social_media = headers.get("socialMediaSource")
-    required_header_check(social_media == None, "Social Media source is required")
+    social_media = args.get("socialMediaSource")
+    required_param_check(social_media == None, "Social Media source is required")
 
-    username = headers.get("username")
-    required_header_check(username == None, "Username is required")
+    username = args.get("username")
+    required_param_check(username == None, "Username is required")
 
-    timezone_text = headers.get("timezone")
-    required_header_check(timezone_text == None, "Timezone is required")
+    timezone_text = args.get("timezone")
+    required_param_check(timezone_text == None, "Timezone is required")
     timezone = pytz.timezone(timezone_text)
 
-    start_date = headers.get("startDate")
-    end_date = headers.get("endDate")
-    required_header_check((start_date == None) or (end_date == None),  "Date range is required")
+    start_date = args.get("startDate")
+    end_date = args.get("endDate")
+    required_param_check((start_date == None) or (end_date == None),  "Date range is required")
 
     start_date_with_tz, end_date_with_tz = compute_start_and_end_date(start_date, end_date, timezone)
 
@@ -73,8 +81,9 @@ def get():
 
     return make_response(jsonify({
         "fullList": analyzed_lst,
-        "byDate": analysis_by_date
-        }), 200)
+        "byDate": analysis_by_date,
+        "emotions": list(index_to_class.values()),
+    }), 200)
 
 
 if __name__ == "__main__":
