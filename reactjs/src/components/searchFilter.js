@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import SelectDropdown from './selectDropdown';
@@ -9,6 +9,7 @@ import '../styles/searchFilter.scss';
 const SearchFilter = (props, context) => {
     const { searchFilter, onChange } = props;
     const timezoneOptions = getTimezoneLst();
+    const [userNameEmpty, setUserNameEmpty] = useState(false);
 
     const handleSearchFilterChange = (newValue, filterName) => {
         let newFilter = {
@@ -22,6 +23,7 @@ const SearchFilter = (props, context) => {
             case filterLsts.username:
                 const value = newValue.target.value;
                 newFilter.username = value;
+                setUserNameEmpty(!value || /^\s*$/.test(value)); 
                 break;
             case filterLsts.timezone:
                 newFilter.timezoneOption = newValue;
@@ -60,6 +62,7 @@ const SearchFilter = (props, context) => {
                     }
                 />
             </div>
+            {userNameEmpty && (<div><p style={{ color: 'red' }}>The Username Field Cannot be empty</p></div>)}
 
             <div className='timezone-selector search-filter row'>
                 <div className='label'>Select Timezone: </div>
