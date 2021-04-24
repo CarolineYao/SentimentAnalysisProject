@@ -8,6 +8,7 @@ import {
     generateMockDataForEmotionByDate,
 } from '../components/utils';
 import '../styles/socialMediaAnalysis.scss';
+import loading from '../loading-spinner.svg';
 
 const SocialMediaAnalysis = (props, context) => {
     const [searchFilter, setSearchFilter] = useState(defaultSearchFilter);
@@ -89,14 +90,27 @@ const SocialMediaAnalysis = (props, context) => {
                 onChange={setSearchFilter}
             />
 
-            <div className='temp-placeholder calendar'>
-                Reserved for Calendar section
-            </div>
+            {isLoading ? (
+                <div className='loading-spinner-wrapper'>
+                    <img
+                        className='loading-spinner'
+                        src={loading}
+                        alt='Loading Spinner'
+                    />
+                </div>
+            ) : (
+                <React.Fragment>
+                    <div className='temp-placeholder calendar'>
+                        Reserved for Calendar section
+                    </div>
 
-            <div className='temp-placeholder per-tweet-wrapper'>
-                Section display after clicking on specific date on calendar
-                {renderEachRow()}
-            </div>
+                    <div className='temp-placeholder per-tweet-wrapper'>
+                        Section display after clicking on specific date on
+                        calendar
+                        {renderEachRow()}
+                    </div>
+                </React.Fragment>
+            )}
         </div>
     );
 };

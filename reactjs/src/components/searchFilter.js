@@ -40,7 +40,7 @@ const SearchFilter = (props, context) => {
     };
 
     return (
-        <React.Fragment>
+        <div>
             <div className='search-filters'>
                 <div className='social-media-source search-filter row'>
                     <div className='label'>Select social media: </div>
@@ -109,7 +109,7 @@ const SearchFilter = (props, context) => {
                     Submit
                 </Button>
             )}
-        </React.Fragment>
+        </div>
     );
 };
 
