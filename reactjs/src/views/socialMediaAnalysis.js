@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
-import { Button } from 'react-bootstrap';
 
 import SearchFilter from '../components/searchFilter';
 import { defaultSearchFilter, API_URL } from '../components/utils';
@@ -8,12 +7,12 @@ import '../styles/socialMediaAnalysis.scss';
 
 const SocialMediaAnalysis = (props, context) => {
     const [searchFilter, setSearchFilter] = useState(defaultSearchFilter);
-    const [isGetting, setGetting] = useState(false);
+    const [isLoading, setLoading] = useState(false);
     const [emotionByDate, seEmotionByDate] = useState({});
     const [emotionLst, setEmotionLst] = useState([]);
 
     useEffect(() => {
-        if (isGetting) {
+        if (isLoading) {
             let queryString = API_URL + '/getuserpostsemotions?';
             const {
                 socialMediaSourceOption,
@@ -46,14 +45,19 @@ const SocialMediaAnalysis = (props, context) => {
                 })
                 .catch((error) => console.log(error))
                 .finally(() => {
-                    setGetting(false);
+                    setLoading(false);
                 });
         }
-    }, [isGetting]);
+    }, [isLoading]);
 
     function getUserEmotions() {
-        setGetting(true);
+        setLoading(true);
     }
+
+    const submitButtonProps = {
+        isLoading,
+        onClick: getUserEmotions,
+    };
 
     // =================== Render=============
     const renderEachRow = () => {
@@ -75,17 +79,9 @@ const SocialMediaAnalysis = (props, context) => {
 
             <SearchFilter
                 searchFilter={searchFilter}
+                submitButtonProps={submitButtonProps}
                 onChange={setSearchFilter}
             />
-
-            <Button
-                variant='primary'
-                className='submit'
-                disabled={isGetting}
-                onClick={getUserEmotions}
-            >
-                Submit
-            </Button>
 
             <div className='temp-placeholder calendar'>
                 Reserved for Calendar section

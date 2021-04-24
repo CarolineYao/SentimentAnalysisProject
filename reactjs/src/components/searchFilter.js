@@ -1,13 +1,15 @@
 import React, { Component, useState } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
+import { Button } from 'react-bootstrap';
+
 import SelectDropdown from './selectDropdown';
 import DateRangePicker from './dateRangePicker';
 import { getTimezoneLst, socialMediaSourceList, filterLsts } from './utils';
 import '../styles/searchFilter.scss';
 
 const SearchFilter = (props, context) => {
-    const { searchFilter, onChange } = props;
+    const { searchFilter, submitButtonProps, onChange } = props;
     const timezoneOptions = getTimezoneLst();
     const [userNameEmpty, setUserNameEmpty] = useState(false);
 
@@ -23,7 +25,7 @@ const SearchFilter = (props, context) => {
             case filterLsts.username:
                 const value = newValue.target.value;
                 newFilter.username = value;
-                setUserNameEmpty(!value || /^\s*$/.test(value)); 
+                setUserNameEmpty(!value || /^\s*$/.test(value));
                 break;
             case filterLsts.timezone:
                 newFilter.timezoneOption = newValue;
@@ -38,59 +40,82 @@ const SearchFilter = (props, context) => {
     };
 
     return (
-        <div className='search-filters'>
-            <div className='social-media-source search-filter row'>
-                <div className='label'>Select social media: </div>
-                <SelectDropdown
-                    value={searchFilter.socialMediaSourceOption}
-                    options={socialMediaSourceList}
-                    onChange={(val) =>
-                        handleSearchFilterChange(val, filterLsts.socialMedia)
-                    }
-                />
+        <React.Fragment>
+            <div className='search-filters'>
+                <div className='social-media-source search-filter row'>
+                    <div className='label'>Select social media: </div>
+                    <SelectDropdown
+                        value={searchFilter.socialMediaSourceOption}
+                        options={socialMediaSourceList}
+                        onChange={(val) =>
+                            handleSearchFilterChange(
+                                val,
+                                filterLsts.socialMedia
+                            )
+                        }
+                    />
+                </div>
+
+                <div className='username-input search-filter row'>
+                    <div className='label'>Enter Username: </div>
+                    <input
+                        type='text'
+                        className='selector'
+                        value={searchFilter.username}
+                        placeholder='e.g. johnDoe'
+                        onChange={(val) =>
+                            handleSearchFilterChange(val, filterLsts.username)
+                        }
+                    />
+                </div>
+                {userNameEmpty && (
+                    <div>
+                        <p style={{ color: 'red' }}>
+                            The Username Field Cannot be empty
+                        </p>
+                    </div>
+                )}
+
+                <div className='timezone-selector search-filter row'>
+                    <div className='label'>Select Timezone: </div>
+
+                    <SelectDropdown
+                        value={searchFilter.timezoneOption}
+                        options={timezoneOptions}
+                        onChange={(val) =>
+                            handleSearchFilterChange(val, filterLsts.timezone)
+                        }
+                    />
+                </div>
+
+                <div className='date-selector search-filter row'>
+                    <div className='label'>Select Date Range: </div>
+                    <DateRangePicker
+                        dateRange={searchFilter.dateRange}
+                        onChange={(val) =>
+                            handleSearchFilterChange(val, filterLsts.dateRange)
+                        }
+                    />
+                </div>
             </div>
 
-            <div className='username-input search-filter row'>
-                <div className='label'>Enter Username: </div>
-                <input
-                    type='text'
-                    className='selector'
-                    value={searchFilter.username}
-                    placeholder='e.g. johnDoe'
-                    onChange={(val) =>
-                        handleSearchFilterChange(val, filterLsts.username)
-                    }
-                />
-            </div>
-            {userNameEmpty && (<div><p style={{ color: 'red' }}>The Username Field Cannot be empty</p></div>)}
-
-            <div className='timezone-selector search-filter row'>
-                <div className='label'>Select Timezone: </div>
-
-                <SelectDropdown
-                    value={searchFilter.timezoneOption}
-                    options={timezoneOptions}
-                    onChange={(val) =>
-                        handleSearchFilterChange(val, filterLsts.timezone)
-                    }
-                />
-            </div>
-
-            <div className='date-selector search-filter row'>
-                <div className='label'>Select Date Range: </div>
-                <DateRangePicker
-                    dateRange={searchFilter.dateRange}
-                    onChange={(val) =>
-                        handleSearchFilterChange(val, filterLsts.dateRange)
-                    }
-                />
-            </div>
-        </div>
+            {submitButtonProps && (
+                <Button
+                    variant='primary'
+                    className='submit'
+                    disabled={submitButtonProps.isLoading}
+                    onClick={submitButtonProps.onClick}
+                >
+                    Submit
+                </Button>
+            )}
+        </React.Fragment>
     );
 };
 
 SearchFilter.propTypes = {
     searchFilter: PropTypes.object.isRequired,
+    submitButtonProps: PropTypes.object,
     onChange: PropTypes.func.isRequired,
 };
 
