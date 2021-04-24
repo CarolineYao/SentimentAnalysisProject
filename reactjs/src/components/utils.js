@@ -1,10 +1,27 @@
 import { format, isValid } from 'date-fns';
+import { Redirect } from 'react-router';
 
 export const moment = require('moment-timezone');
 
 export const API_URL = 'http://localhost:5000';
 
-export const emotions = ['anger', 'fear', 'love', 'sadness', 'joy', 'surprise'];
+export const emotions = ['fear', 'joy', 'love', 'anger', 'sadness', 'surprise'];
+
+export const emotionsToColor = {
+    anger: 'rgb(218, 251, 192)',
+    love: 'rgb(251, 195, 192)',
+    sadness: 'rgb(172, 197, 237)',
+    joy: 'rgb(248, 251, 192)',
+    fear: 'rgb(179, 172, 237)',
+    surprise: 'rgb(251, 224, 192)',
+};
+
+export const MILLI = {
+    seconds: 1000,
+    minutes: 1000 * 60,
+    hours: 1000 * 60 * 60,
+    day: 1000 * 60 * 60 * 24,
+};
 
 export const socialMediaSourceList = [
     {
@@ -34,6 +51,10 @@ export const defaultSearchFilter = {
         key: 'selection',
     },
 };
+
+export function capitalizeText(text) {
+    return text.slice(0, 1).toUpperCase() + text.slice(1, text.length);
+}
 
 export function formatDate(value, dateFormat) {
     if (value && isValid(value)) {
@@ -112,10 +133,7 @@ export function generateRandomText(num) {
 export function generateRandomTimeBetween(start, end) {
     const milliseconds = end.diff(start, 'milliseconds');
 
-    return moment(start).add(
-        Math.floor(Math.random() * milliseconds),
-        'milliseconds'
-    );
+    return moment(start).add(Math.floor(Math.random() * milliseconds), 'milliseconds');
 }
 
 export function generateRandomTimeXDaysAfter(start, x = 1) {
@@ -126,12 +144,12 @@ export function generateRandomTimeXDaysAfter(start, x = 1) {
 
 export function generateMockDataForEmotionByDate(
     timezone = guessUserTimezone(),
-    startDateString = moment().format('YYYY-MM-DD'),
-    endDateString = moment().clone().startOf('month').format('YYYY-MM-DD')
+    startDateString = moment().clone().startOf('month').format('YYYY-MM-DD'),
+    endDateString = moment().format('YYYY-MM-DD')
 ) {
     const startDate = moment.tz(startDateString, 'YYYY-MM-DD', timezone);
     const endDate = moment(endDateString, 'YYYY-MM-DD', timezone);
-    const numOfEntries = startDate.diff(endDate, 'days') + 1;
+    const numOfEntries = endDate.diff(startDate, 'days') + 1;
 
     const result = {};
     Array.from(Array(numOfEntries).keys()).forEach((index) => {

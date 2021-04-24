@@ -2,9 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 
 import SearchFilter from '../components/searchFilter';
+import EmotionCalendar from '../components/emotionCalendar';
 import {
     defaultSearchFilter,
     API_URL,
+    emotions,
     generateMockDataForEmotionByDate,
 } from '../components/utils';
 import '../styles/socialMediaAnalysis.scss';
@@ -21,12 +23,7 @@ const SocialMediaAnalysis = (props, context) => {
     useEffect(() => {
         if (isLoading) {
             let queryString = API_URL + '/getuserpostsemotions?';
-            const {
-                socialMediaSourceOption,
-                username,
-                timezoneOption,
-                dateRange,
-            } = searchFilter;
+            const { socialMediaSourceOption, username, timezoneOption, dateRange } = searchFilter;
 
             const queryParam = {
                 socialMediaSource: socialMediaSourceOption.value,
@@ -80,9 +77,7 @@ const SocialMediaAnalysis = (props, context) => {
 
     return (
         <div className='social-media-analysis page'>
-            <h1 className='section-title'>
-                This is Social Media Analysis page
-            </h1>
+            <h1 className='section-title'>This is Social Media Analysis page</h1>
 
             <SearchFilter
                 searchFilter={searchFilter}
@@ -92,21 +87,19 @@ const SocialMediaAnalysis = (props, context) => {
 
             {isLoading ? (
                 <div className='loading-spinner-wrapper'>
-                    <img
-                        className='loading-spinner'
-                        src={loading}
-                        alt='Loading Spinner'
-                    />
+                    <img className='loading-spinner' src={loading} alt='Loading Spinner' />
                 </div>
             ) : (
                 <React.Fragment>
-                    <div className='temp-placeholder calendar'>
-                        Reserved for Calendar section
+                    <div>
+                        <EmotionCalendar
+                            emotionByDate={mockEmotionByDateData}
+                            emotions={emotions}
+                        />
                     </div>
 
                     <div className='temp-placeholder per-tweet-wrapper'>
-                        Section display after clicking on specific date on
-                        calendar
+                        Section display after clicking on specific date on calendar
                         {renderEachRow()}
                     </div>
                 </React.Fragment>

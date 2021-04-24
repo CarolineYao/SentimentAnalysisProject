@@ -1,0 +1,15 @@
+.calendar {
+    width: 80%;
+    margin: 0 5%;
+    &.month {
+        height: 950px;
+    }
+
+    &.week {
+        height: 500px;
+
+        .rbc-day-slot .rbc-events-container {
+            margin: 0 1px;
+        }
+    }
+}
