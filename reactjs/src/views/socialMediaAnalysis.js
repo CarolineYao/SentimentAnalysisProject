@@ -2,7 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 
 import SearchFilter from '../components/searchFilter';
-import { defaultSearchFilter, API_URL } from '../components/utils';
+import {
+    defaultSearchFilter,
+    API_URL,
+    generateMockDataForEmotionByDate,
+} from '../components/utils';
 import '../styles/socialMediaAnalysis.scss';
 
 const SocialMediaAnalysis = (props, context) => {
@@ -10,6 +14,8 @@ const SocialMediaAnalysis = (props, context) => {
     const [isLoading, setLoading] = useState(false);
     const [emotionByDate, seEmotionByDate] = useState({});
     const [emotionLst, setEmotionLst] = useState([]);
+
+    const mockEmotionByDateData = generateMockDataForEmotionByDate();
 
     useEffect(() => {
         if (isLoading) {
