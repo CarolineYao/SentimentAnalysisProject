@@ -52,6 +52,14 @@ export const defaultSearchFilter = {
     },
 };
 
+export function getDateText(date) {
+    return date.toISOString().slice(0, 10);
+}
+
+export function generateRandomId(componentName = 'randomly') {
+    return `${componentName}_` + Math.floor(Math.random() * 100000000);
+}
+
 export function capitalizeText(text) {
     return text.slice(0, 1).toUpperCase() + text.slice(1, text.length);
 }

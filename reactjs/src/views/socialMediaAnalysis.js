@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { withRouter } from 'react-router-dom';
+import moment from 'moment';
 
 import SearchFilter from '../components/searchFilter';
 import EmotionCalendar from '../components/emotionCalendar';
@@ -8,7 +9,9 @@ import {
     API_URL,
     emotions,
     generateMockDataForEmotionByDate,
+    getDateText,
 } from '../components/utils';
+import PostItemsList from '../components/postItemsList';
 import '../styles/socialMediaAnalysis.scss';
 import loading from '../loading-spinner.svg';
 
@@ -17,8 +20,8 @@ const SocialMediaAnalysis = (props, context) => {
     const [isLoading, setLoading] = useState(false);
     const [emotionByDate, seEmotionByDate] = useState({});
     const [emotionLst, setEmotionLst] = useState([]);
-
-    const mockEmotionByDateData = generateMockDataForEmotionByDate();
+    const [postLst, setPostLst] = useState([]);
+    const elementRef = useRef();
 
     useEffect(() => {
         if (isLoading) {
@@ -29,8 +32,8 @@ const SocialMediaAnalysis = (props, context) => {
                 socialMediaSource: socialMediaSourceOption.value,
                 username,
                 timezone: timezoneOption.value,
-                startDate: dateRange.startDate.toISOString().slice(0, 10),
-                endDate: dateRange.endDate.toISOString().slice(0, 10),
+                startDate: getDateText(dateRange.startDate),
+                endDate: getDateText(dateRange.endDate),
             };
 
             Object.keys(queryParam).forEach((key, index) => {
@@ -54,6 +57,11 @@ const SocialMediaAnalysis = (props, context) => {
         }
     }, [isLoading]);
 
+    useEffect(() => {
+        const mockEmotionByDateData = generateMockDataForEmotionByDate();
+        seEmotionByDate(mockEmotionByDateData);
+    }, []);
+
     function getUserEmotions() {
         setLoading(true);
     }
@@ -63,17 +71,34 @@ const SocialMediaAnalysis = (props, context) => {
         onClick: getUserEmotions,
     };
 
+    function scrollToList() {
+        const node = elementRef.current;
+
+        node.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function handleCalendarEventClicked(event) {
+        const date = getDateText(event.start);
+        const selectedDate = moment(date, 'YYYY-MM-DD')
+            .tz(searchFilter.timezoneOption.value)
+            .format();
+
+        const emotionToPost = emotionByDate[selectedDate];
+
+        if (emotionToPost !== undefined) {
+            const postNestedLst = Object.values(emotionToPost).map((posts) => {
+                return posts;
+            });
+            const flattened = postNestedLst
+                .flat()
+                .sort((a, b) => new Date(a.time) - new Date(b.time));
+
+            setPostLst(flattened);
+            scrollToList();
+        }
+    }
+
     // =================== Render=============
-    const renderEachRow = () => {
-        const dummpLoop = Array.from(Array(10).keys());
-        return dummpLoop.map((index) => {
-            return (
-                <div className='per-tweet' key={index}>
-                    This is tweet-{index} along with sentiment analysis result
-                </div>
-            );
-        });
-    };
 
     return (
         <div className='social-media-analysis page'>
@@ -93,14 +118,20 @@ const SocialMediaAnalysis = (props, context) => {
                 <React.Fragment>
                     <div>
                         <EmotionCalendar
-                            emotionByDate={mockEmotionByDateData}
+                            emotionByDate={emotionByDate}
                             emotions={emotions}
+                            onCalendarEventClicked={handleCalendarEventClicked}
                         />
                     </div>
 
-                    <div className='temp-placeholder per-tweet-wrapper'>
+                    <div className='temp-placeholder per-tweet-wrapper' ref={elementRef}>
                         Section display after clicking on specific date on calendar
-                        {renderEachRow()}
+                        {postLst.length > 0 && (
+                            <PostItemsList
+                                postItemsLst={postLst}
+                                timezone={searchFilter.timezoneOption.value}
+                            />
+                        )}
                     </div>
                 </React.Fragment>
             )}

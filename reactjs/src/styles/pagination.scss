@@ -1,0 +1,14 @@
+@import '../../node_modules/bootstrap/scss/bootstrap';
+
+.pagination-handler ul.pagination {
+    margin: 2% 10%;
+    justify-content: center;
+
+    .pagination-item {
+        justify-content: center;
+    }
+
+    li.page-item .page-link {
+        padding: 0.75rem 1.5rem;
+    }
+}

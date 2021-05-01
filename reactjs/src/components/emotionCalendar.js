@@ -16,7 +16,7 @@ const VIEWS = {
 const EmotionCalendar = (props) => {
     const elementRef = useRef();
     const [calendarView, setCalendarView] = useState(VIEWS.month);
-    const { emotionByDate, emotions } = props;
+    const { emotionByDate, emotions, onCalendarEventClicked } = props;
     const eachEmotionDuration = MILLI.day / emotions.length;
 
     const emotionToTimeSlot = {};
@@ -68,7 +68,7 @@ const EmotionCalendar = (props) => {
                 border: `1px solid ${color}`,
                 opacity: isEmpty ? 0 : 1,
                 color: 'rgb(0, 0, 0, 1)',
-                'font-size': '12px',
+                fontSize: '12px',
             },
         };
 
@@ -102,6 +102,7 @@ const EmotionCalendar = (props) => {
                 events={emotionEventsList}
                 views={Object.values(VIEWS)}
                 onView={handleViewChange}
+                onSelectEvent={onCalendarEventClicked}
                 eventPropGetter={eventStyleGetter}
             />
         </div>

@@ -1,0 +1,31 @@
+.post-item {
+    border: 2px solid #59a2f3;
+    margin: 30px 80px;
+    font-size: 24px;
+
+    .info {
+        font-size: 18px;
+        display: inline-flex;
+        width: 100%;
+        padding: 0 50px;
+        line-height: 40px;
+
+        .time {
+            width: 48%;
+            float: left;
+            text-align: left;
+        }
+
+        .emotion {
+            width: 48%;
+            float: right;
+            padding-left: 42%;
+        }
+    }
+
+    .item-text {
+        font-size: 20px;
+        text-align: left;
+        padding: 0 30px;
+    }
+}
